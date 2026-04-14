@@ -1,5 +1,6 @@
 package com.ordersphere.product.service;
 
+import com.ordersphere.common.exception.ResourceNotFoundException;
 import com.ordersphere.product.domain.Product;
 import com.ordersphere.product.dto.CreateProductRequest;
 import com.ordersphere.product.dto.ProductResponse;
@@ -40,7 +41,7 @@ public class ProductService {
 
     public ProductResponse getProductById(Long id){
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
         return mapToResponse(product);
     }
 
@@ -53,7 +54,7 @@ public class ProductService {
 
     public void deactivateProduct(Long id){
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
         product.setActive(false);
         productRepository.save(product);
     }
