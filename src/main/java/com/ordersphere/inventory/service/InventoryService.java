@@ -41,6 +41,20 @@ public class InventoryService {
         return mapToResponse(updatedInventory);
     }
 
+    @Transactional
+    public void reserveStock(Long productId, Long quantity) {
+        Inventory inventory = inventoryRepository.findByProductId(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found for product ID: " + productId));
+        inventory.reserve(quantity);
+    }
+
+    @Transactional
+    public void releaseStock(Long productId, Long quantity) {
+        Inventory inventory = inventoryRepository.findByProductId(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found for product ID: " + productId));
+        inventory.release(quantity);
+    }
+
     private InventoryResponse mapToResponse(Inventory inventory) {
         return InventoryResponse.builder()
                 .id(inventory.getId())

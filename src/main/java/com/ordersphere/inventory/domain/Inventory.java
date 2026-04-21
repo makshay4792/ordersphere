@@ -1,6 +1,7 @@
 package com.ordersphere.inventory.domain;
 
 import com.ordersphere.common.entity.BaseEntity;
+import com.ordersphere.common.exception.InsufficientStockException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -49,7 +50,7 @@ public class Inventory extends BaseEntity {
     public void reserve(Long quantity) {
         validateNonNegative(quantity);
         if (quantity > this.availableQuantity) {
-            throw new IllegalArgumentException("Not enough available stock to reserve");
+            throw new InsufficientStockException("Not enough available stock to reserve");
         }
         this.reservedQuantity += quantity;
         this.availableQuantity -= quantity;
@@ -58,7 +59,7 @@ public class Inventory extends BaseEntity {
     public void release(Long quantity) {
         validateNonNegative(quantity);
         if (quantity > this.reservedQuantity) {
-            throw new IllegalArgumentException("Cannot release more than reserved quantity");
+            throw new IllegalStateException("Cannot release more than reserved quantity");
         }
         this.reservedQuantity -= quantity;
         this.availableQuantity += quantity;
