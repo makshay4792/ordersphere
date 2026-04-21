@@ -33,6 +33,14 @@ public class InventoryService {
         return mapToResponse(inventory);
     }
 
+    public InventoryResponse addStock(Long productId, Long quantity) {
+        Inventory inventory = inventoryRepository.findByProductId(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found for product ID: " + productId));
+        inventory.addStock(quantity);
+        Inventory updatedInventory = inventoryRepository.save(inventory);
+        return mapToResponse(updatedInventory);
+    }
+
     private InventoryResponse mapToResponse(Inventory inventory) {
         return InventoryResponse.builder()
                 .id(inventory.getId())

@@ -1,5 +1,6 @@
 package com.ordersphere.inventory.controller;
 
+import com.ordersphere.inventory.dto.AddStockRequest;
 import com.ordersphere.inventory.dto.CreateInventoryRequest;
 import com.ordersphere.inventory.dto.InventoryResponse;
 import com.ordersphere.inventory.service.InventoryService;
@@ -27,5 +28,10 @@ public class InventoryController {
     @GetMapping("/{productId}")
     public InventoryResponse getInventoryByProductId(@PathVariable Long productId) {
         return inventoryService.getInventoryByProductId(productId);
+    }
+
+    @PostMapping("/{productId}/stock")
+    public InventoryResponse addStock(@PathVariable Long productId, @Valid @RequestBody AddStockRequest request) {
+        return inventoryService.addStock(productId, request.getQuantity());
     }
 }
