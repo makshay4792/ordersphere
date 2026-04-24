@@ -38,6 +38,9 @@ public class Order {
     }
 
     public void cancel() {
+        if(this.getStatus() == OrderStatus.CANCELLED || this.getStatus() == OrderStatus.FAILED) {
+            throw new IllegalStateException("Order is already canceled");
+        }
         this.status = OrderStatus.CANCELLED;
     }
 }

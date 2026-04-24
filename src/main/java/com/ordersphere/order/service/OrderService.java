@@ -80,4 +80,14 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
         return mapToCreateOrderResponse(order);
     }
+
+    @Transactional
+    public CreateOrderResponse cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
+        order.cancel();
+        order.getOrderItems().forEach(item -> inventoryService.releaseStock(item.getProductId(), item.getQuantity()));
+        Order savedOrder = orderRepository.save(order);
+        return mapToCreateOrderResponse(savedOrder);
+    }
 }

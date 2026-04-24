@@ -29,4 +29,10 @@ public class OrderController {
     public CreateOrderResponse getOrderById(@PathVariable Long orderId) {
         return orderService.getOrderById(orderId);
     }
+
+    @PostMapping("/{orderId}/cancel")
+    @ResponseStatus(HttpStatus.OK)
+    public CreateOrderResponse cancelOrder(@PathVariable Long orderId) {
+        return orderService.cancelOrder(orderId);
+    }
 }
