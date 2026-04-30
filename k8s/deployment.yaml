@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordersphere
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ordersphere
+  template:
+    metadata:
+      labels:
+        app: ordersphere
+    spec:
+      containers:
+        - name: ordersphere
+          image: ordersphere:0.1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
