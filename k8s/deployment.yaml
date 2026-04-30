@@ -18,6 +18,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: ordersphere-config
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
